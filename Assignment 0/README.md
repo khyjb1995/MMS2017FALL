@@ -6,3 +6,4 @@ This is a paragraph describing something about the assignment.
 1. Numbered Item 1
 2. Numbered Item 2
 3. Numbered Item 3
+![](http://www.elearn.ndhu.edu.tw/moodle/file.php/72180/photo.jpg)
