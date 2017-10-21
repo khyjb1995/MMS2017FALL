@@ -9,6 +9,7 @@ This is a paragraph describing something about the assignment.
 
 ![](https://i.imgur.com/5dkVxsy.jpg)
 
+| | |
 | Title       | Column Title 1 | Column Title 2 |
 | ----------- | -------------- | -------------- |
 | Row Title 1 | blah | blah |
