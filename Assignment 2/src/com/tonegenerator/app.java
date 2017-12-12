@@ -116,6 +116,8 @@ public class app extends JFrame{
             new JRadioButton("Echo Pulse");
     final JRadioButton waWaPulse =
             new JRadioButton("WaWa Pulse");
+    final JScrollBar freqScroll =
+            new JScrollBar(JScrollBar.HORIZONTAL,50,1,1,100);
 
     //Following components appear in the South
     // position of the GUI.
@@ -129,6 +131,7 @@ public class app extends JFrame{
     private JPanel synButtonPanel;
     private JPanel outputButtonPanel;
     private JPanel centerPanel;
+    private JScrollBar scrollBar1;
 
     //-------------------------------------------//
     public static void main(
@@ -230,6 +233,7 @@ public class app extends JFrame{
         synButtonPanel.add(decayPulse);
         synButtonPanel.add(echoPulse);
         synButtonPanel.add(waWaPulse);
+        synButtonPanel.add(freqScroll);
 
         //Note that the centerPanel has center
         // alignment by default.
@@ -264,6 +268,12 @@ public class app extends JFrame{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(250,275);
         setVisible(true);
+        freqScroll.addAdjustmentListener(new AdjustmentListener() {
+            @Override
+            public void adjustmentValueChanged(AdjustmentEvent e) {
+                elapsedTimeMeter.setText(String.valueOf(e.getValue()));
+            }
+        });
     }//end constructor
     //-------------------------------------------//
 
@@ -470,15 +480,78 @@ public class app extends JFrame{
             // 16-bit sample.
             int bytesPerSamp = 2;
             sampleRate = 16000.0F;
+            double freq = freqScroll.getValue() * 10;//arbitrary frequency
             // Allowable 8000,11025,16000,22050,44100
             int sampLength = byteLength/bytesPerSamp;
-            for(int cnt = 0; cnt < sampLength; cnt++){
+            int cnt = 0;
+            for(cnt = 0; cnt < sampLength/8; cnt++){
                 double time = cnt/sampleRate;
-                double freq = 950.0;//arbitrary frequency
                 double sinValue =
-                        (Math.sin(2*Math.PI*freq*time) +
-                                Math.sin(2*Math.PI*(freq/1.8)*time) +
-                                Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
+                        (Math.sin(2*Math.PI*freq*time)); //+
+                                //Math.sin(2*Math.PI*(freq/1.8)*time) +
+                                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
+                shortBuffer.put((short)(16000*sinValue));
+            }//end for loop
+            freq+= 20;
+            for(; cnt < (sampLength/8) * 2; cnt++){
+                double time = cnt/sampleRate;
+                double sinValue =
+                        (Math.sin(2*Math.PI*freq*time)); //+
+                //Math.sin(2*Math.PI*(freq/1.8)*time) +
+                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
+                shortBuffer.put((short)(16000*sinValue));
+            }//end for loop
+            freq+=20;
+            for(; cnt < (sampLength/8) * 3; cnt++){
+                double time = cnt/sampleRate;
+                double sinValue =
+                        (Math.sin(2*Math.PI*freq*time)); //+
+                //Math.sin(2*Math.PI*(freq/1.8)*time) +
+                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
+                shortBuffer.put((short)(16000*sinValue));
+            }//end for loop
+            freq-=40;
+            for(; cnt < (sampLength/8) * 4; cnt++){
+                double time = cnt/sampleRate;
+                double sinValue =
+                        (Math.sin(2*Math.PI*freq*time)); //+
+                //Math.sin(2*Math.PI*(freq/1.8)*time) +
+                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
+                shortBuffer.put((short)(16000*sinValue));
+            }//end for loop
+            for(; cnt < (sampLength/8) * 5; cnt++){
+                double time = cnt/sampleRate;
+                double sinValue =
+                        (Math.sin(2*Math.PI*freq*time)); //+
+                //Math.sin(2*Math.PI*(freq/1.8)*time) +
+                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
+                shortBuffer.put((short)(16000*sinValue));
+            }//end for loop
+            freq+= 20;
+            for(; cnt < (sampLength/8) * 6; cnt++){
+                double time = cnt/sampleRate;
+                double sinValue =
+                        (Math.sin(2*Math.PI*freq*time)); //+
+                //Math.sin(2*Math.PI*(freq/1.8)*time) +
+                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
+                shortBuffer.put((short)(16000*sinValue));
+            }//end for loop
+            freq+=20;
+            for(; cnt < (sampLength/8) * 7; cnt++){
+                double time = cnt/sampleRate;
+                double sinValue =
+                        (Math.sin(2*Math.PI*freq*time)); //+
+                //Math.sin(2*Math.PI*(freq/1.8)*time) +
+                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
+                shortBuffer.put((short)(16000*sinValue));
+            }//end for loop
+            freq-=40;
+            for(; cnt < sampLength; cnt++){
+                double time = cnt/sampleRate;
+                double sinValue =
+                        (Math.sin(2*Math.PI*freq*time)); //+
+                //Math.sin(2*Math.PI*(freq/1.8)*time) +
+                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
                 shortBuffer.put((short)(16000*sinValue));
             }//end for loop
         }//end method tones
