@@ -318,6 +318,7 @@ public class Main {
             byteLength = synDataBuffer.length;
             if (sineWaveRadioButton.isSelected()) sinetones();
             else if (cosineWaveRadioButton.isSelected()) cosinetones();
+            else if (squareWaveRadioButton.isSelected()) squaretones();
             else if (bassoRadioButton.isSelected() || altoRadioButton.isSelected() || otherRadioButton.isSelected()) bassotones();
         }
 
@@ -343,6 +344,19 @@ public class Main {
             for (int cnt = 0; cnt < sampLength; cnt++) {
                 double time = cnt / sampleRate;
                 double sinValue = (Math.cos(2 * Math.PI * freq * time));
+                shortBuffer.put((short) (16000 * sinValue));
+            }
+        }
+
+        void squaretones() {
+            channels = 1;
+            int bytesPerSamp = 2;
+            sampleRate = 16000.0F;
+            double freq = freqScroll.getValue();
+            int sampLength = byteLength / bytesPerSamp;
+            for (int cnt = 0; cnt < sampLength; cnt++) {
+                double time = cnt / sampleRate;
+                double sinValue = Math.signum(Math.sin(2 * Math.PI * freq * time));
                 shortBuffer.put((short) (16000 * sinValue));
             }
         }
