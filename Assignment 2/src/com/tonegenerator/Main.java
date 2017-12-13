@@ -14,7 +14,6 @@ public class Main {
     private JPanel panelMain;
     private JRadioButton sineWaveRadioButton;
     private JRadioButton squareWaveRadioButton;
-    private JRadioButton sineXCosineRadioButton1;
     private JRadioButton cosineWaveRadioButton;
     private JRadioButton triangleWaveRadioButton;
     private JRadioButton otherRadioButton;
@@ -25,7 +24,7 @@ public class Main {
     private JLabel durationTxt;
     private JLabel freqTxt;
     private JRadioButton bassoRadioButton;
-    private JRadioButton bothRadioButton;
+    private JRadioButton mergedRadioButton;
     private JTextField readTxt;
     private JButton outputButton;
     private JPanel panelLeft;
@@ -34,6 +33,7 @@ public class Main {
     private JTextField fileNameTxt;
     private JRadioButton readFileRadioButton;
     private JTextField inputLevelTxt;
+    private JRadioButton radioButton1;
 
     AudioFormat audioFormat;
     AudioInputStream audioInputStream;
@@ -46,6 +46,7 @@ public class Main {
     boolean bigEndian = true;
     byte audioData[];
     int song[];
+    int song2[];
     static final int[][] freqs = {
             {16, 17, 18, 20, 21, 22, 23, 25, 26, 28, 29, 31}, //Level 0
             {33, 35, 37, 39, 41, 44, 46, 49, 52, 55, 58, 62}, //Level 1
@@ -65,14 +66,13 @@ public class Main {
         synButtonGroup.add(cosineWaveRadioButton);
         synButtonGroup.add(triangleWaveRadioButton);
         synButtonGroup.add(squareWaveRadioButton);
-        synButtonGroup.add(sineXCosineRadioButton1);
         synButtonGroup.add(otherRadioButton);
         synButtonGroup.add(bassoRadioButton);
-        synButtonGroup.add(bothRadioButton);
+        synButtonGroup.add(mergedRadioButton);
         synButtonGroup.add(altoRadioButton);
         synButtonGroup.add(bassoRadioButton);
-        synButtonGroup.add(bothRadioButton);
         synButtonGroup.add(readFileRadioButton);
+        synButtonGroup.add(radioButton1);
         freqInput.setText(String.valueOf(freqScroll.getValue()));
 
         playorfileBtn.setEnabled(false);
@@ -88,74 +88,88 @@ public class Main {
                     String textGet = readTxt.getText();
                     int txtCount = 0;
                     int level = 4;
+                    int level2 = 2;
                     if(bassoRadioButton.isSelected()) level = 2;
-                    if(altoRadioButton.isSelected()) level = 4;
-                    if(otherRadioButton.isSelected()) level = Integer.parseInt(inputLevelTxt.getText());
+                    else if(altoRadioButton.isSelected()) level = 4;
+                    else if(otherRadioButton.isSelected()) level = Integer.parseInt(inputLevelTxt.getText());
                     for (int i = 0; i < textGet.length(); i++) {
                         if (textGet.charAt(i) != '^') txtCount++;
                         //fileNameTxt.setText(fileNameTxt.getText() + textGet.charAt(i));
                     }
                     //fileNameTxt.setText(String.valueOf(txtCount));
                     song = new int[txtCount];
+                    song2 = new int[txtCount];
                     boolean flag = false;
                     for (int i = 0, j = 0; i < textGet.length(); i++) {
                         switch (textGet.charAt(i)) {
                             case '1':
                                 if (flag) {
                                     song[j] = freqs[level][1];
+                                    song2[j] = freqs[level2][1];
                                     flag = false;
                                     j++;
                                 } else {
                                     song[j] = freqs[level][0];
+                                    song2[j] = freqs[level2][0];
                                     j++;
                                 }
                                 break;
                             case '2':
                                 if (flag) {
                                     song[j] = freqs[level][3];
+                                    song2[j] = freqs[level2][3];
                                     flag = false;
                                     j++;
                                 } else {
                                     song[j] = freqs[level][2];
+                                    song2[j] = freqs[level2][2];
                                     j++;
                                 }
                                 break;
                             case '3':
                                 song[j] = freqs[level][4];
+                                song2[j] = freqs[level2][4];
                                 j++;
                                 break;
                             case '4':
                                 if (flag) {
                                     song[j] = freqs[level][6];
+                                    song2[j] = freqs[level2][6];
                                     flag = false;
                                     j++;
                                 } else {
                                     song[j] = freqs[level][5];
+                                    song2[j] = freqs[level2][5];
                                     j++;
                                 }
                                 break;
                             case '5':
                                 if (flag) {
                                     song[j] = freqs[level][8];
+                                    song2[j] = freqs[level2][8];
                                     flag = false;
                                     j++;
                                 } else {
                                     song[j] = freqs[level][7];
+                                    song2[j] = freqs[level2][7];
                                     j++;
                                 }
                                 break;
                             case '6':
                                 if (flag) {
                                     song[j] = freqs[level][10];
+                                    song2[j] = freqs[level2][10];
                                     flag = false;
                                     j++;
                                 } else {
                                     song[j] = freqs[level][9];
+                                    song2[j] = freqs[level2][9];
                                     j++;
                                 }
                                 break;
                             case '7':
                                 song[j] = freqs[level][11];
+                                song2[j] = freqs[level2][11];
                                 j++;
                                 break;
                             case '^':
@@ -163,10 +177,12 @@ public class Main {
                                 break;
                             case '-':
                                 song[j] = 1;
+                                song2[j] = 1;
                                 j++;
                                 break;
                             case '_':
                                 song[j] = 0;
+                                song2[j] = 0;
                                 j++;
                                 break;
                             default:
@@ -176,9 +192,7 @@ public class Main {
                     }
                     audioData = new byte[16000 * txtCount];
                     new SynGen().getSyntheticData(audioData);
-                    //durationTxt.setText("backsyn");
                 }
-
                 playorfileBtn.setEnabled(true);
             }
         });
@@ -319,6 +333,7 @@ public class Main {
             if (sineWaveRadioButton.isSelected()) sinetones();
             else if (cosineWaveRadioButton.isSelected()) cosinetones();
             else if (squareWaveRadioButton.isSelected()) squaretones();
+            else if (triangleWaveRadioButton.isSelected()) triangletones();
             else if (bassoRadioButton.isSelected() || altoRadioButton.isSelected() || otherRadioButton.isSelected()) bassotones();
         }
 
@@ -361,6 +376,19 @@ public class Main {
             }
         }
 
+        void triangletones() {
+            channels = 1;
+            int bytesPerSamp = 2;
+            sampleRate = 16000.0F;
+            double freq = freqScroll.getValue();
+            int sampLength = byteLength / bytesPerSamp;
+            for (int cnt = 0; cnt < sampLength; cnt++) {
+                double time = cnt / sampleRate;
+                double sinValue = 1 - 4*Math.abs( Math.round(freq*time-0.25)-(freq*time-0.25) );
+                shortBuffer.put((short) (16000 * sinValue));
+            }
+        }
+
         void bassotones() {
             channels = 1;
             int bytesPerSamp = 2;
@@ -370,73 +398,33 @@ public class Main {
             //double freq = song[0];
             int sampLength = byteLength / bytesPerSamp;
             durationTxt.setText(String.valueOf(sampLength));
-
+            //boolean swap = false;
             for(int cnt = 0; cnt < sampLength; cnt++){
                 if(cnt % 8000 == 0) n++;
                 double time = cnt/sampleRate;
-                if(cnt % 8000 < 7500){
-                    sinValue = (Math.sin(2*Math.PI*song[n]*time));
+                if(cnt % 8000 < 7950){
+                    if(altoRadioButton.isSelected()) {
+                        if(cnt%8000 > 4000) sinValue = (Math.sin(2*Math.PI*song[n]*time));
+                        else sinValue = (Math.sin(2*Math.PI*song2[n]*time));
+                    }
+                    else{
+                        sinValue = (Math.sin(2*Math.PI*song[n]*time));
+                    }
                 }
                 else {
                         if((n+1 != sampLength/8000)){
-                            if(song[n+1] == 0 ) sinValue = (Math.sin(2*Math.PI*song[n]*time));
+                            if(song[n+1] == 0 ){
+                                if(altoRadioButton.isSelected()) {
+                                    if(cnt%8000 > 4000) sinValue = (Math.sin(2*Math.PI*song[n]*time));
+                                    else sinValue = (Math.sin(2*Math.PI*song2[n]*time));
+                                }
+                                else{
+                                    sinValue = (Math.sin(2*Math.PI*song[n]*time));
+                                }
+                            }
                             else sinValue = (Math.sin(2*Math.PI*1*time));
                         }
                         else sinValue = (Math.sin(2*Math.PI*1*time));
-                }
-                shortBuffer.put((short)(16000*sinValue));
-            }
-        }
-
-        void mergetones() {
-            channels = 1;
-            int bytesPerSamp = 2;
-            int n = -1;
-            double sinValue = 0;
-            sampleRate = 16000.0F;
-            //double freq = song[0];
-            int sampLength = byteLength / bytesPerSamp;
-            durationTxt.setText(String.valueOf(sampLength));
-
-            for(int cnt = 0; cnt < sampLength; cnt++){
-                if(cnt % 8000 == 0) n++;
-                double time = cnt/sampleRate;
-                if(cnt % 8000 < 7500){
-                    sinValue = (Math.sin(2*Math.PI*song[n]*time));
-                }
-                else {
-                    if((n+1 != sampLength/8000)){
-                        if(song[n+1] == 0 ) sinValue = (Math.sin(2*Math.PI*song[n]*time));
-                        else sinValue = (Math.sin(2*Math.PI*1*time));
-                    }
-                    else sinValue = (Math.sin(2*Math.PI*1*time));
-                }
-                shortBuffer.put((short)(16000*sinValue));
-            }
-        }
-
-        void mixtones() {
-            channels = 1;
-            int bytesPerSamp = 2;
-            int n = -1;
-            double sinValue = 0;
-            sampleRate = 16000.0F;
-            //double freq = song[0];
-            int sampLength = byteLength / bytesPerSamp;
-            durationTxt.setText(String.valueOf(sampLength));
-
-            for(int cnt = 0; cnt < sampLength; cnt++){
-                if(cnt % 8000 == 0) n++;
-                double time = cnt/sampleRate;
-                if(cnt % 8000 < 7500){
-                    sinValue = (Math.cos(2*Math.PI*song[n]*time));
-                }
-                else {
-                    if((n+1 != sampLength/8000)){
-                        if(song[n+1] == 0 ) sinValue = (Math.sin(2*Math.PI*song[n]*time));
-                        else sinValue = (Math.cos(2*Math.PI*1*time));
-                    }
-                    else sinValue = (Math.cos(2*Math.PI*1*time));
                 }
                 shortBuffer.put((short)(16000*sinValue));
             }

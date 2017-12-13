@@ -155,14 +155,6 @@
                   <text value="basso"/>
                 </properties>
               </component>
-              <component id="2d76e" class="javax.swing.JRadioButton" binding="bothRadioButton">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Both"/>
-                </properties>
-              </component>
               <component id="8a790" class="javax.swing.JTextField" binding="readTxt">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -171,6 +163,14 @@
                 </constraints>
                 <properties>
                   <text value=""/>
+                </properties>
+              </component>
+              <component id="5651" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Tonal Input: "/>
                 </properties>
               </component>
             </children>
@@ -188,7 +188,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="alto"/>
+                  <text value="Merge"/>
                 </properties>
               </component>
               <component id="97b33" class="javax.swing.JRadioButton" binding="otherRadioButton">
@@ -222,7 +222,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="ReadFile"/>
+                  <text value="None"/>
                 </properties>
               </component>
               <component id="446fe" class="javax.swing.JTextField" binding="fileNameTxt">
