@@ -47,6 +47,16 @@ public class Main {
     byte audioData[] = new byte[16000*14];
 
     public Main() {
+        final ButtonGroup synButtonGroup = new ButtonGroup();
+        synButtonGroup.add(sineWaveRadioButton);
+        synButtonGroup.add(cosineWaveRadioButton);
+        synButtonGroup.add(triangleWaveRadioButton);
+        synButtonGroup.add(squareWaveRadioButton);
+        synButtonGroup.add(sineXCosineRadioButton1);
+        synButtonGroup.add(otherRadioButton);
+        synButtonGroup.add(readRadioButton);
+        synButtonGroup.add(readFileRadioButton);
+
         playorfileBtn.setEnabled(false);
         generateBtn.addActionListener(new ActionListener() {
             @Override
@@ -62,33 +72,49 @@ public class Main {
                 playorfiledata();
             }
         });
+        outputButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                outputdata();
+            }
+        });
     }
 
     private void playorfiledata() {
         try{
-
             InputStream byteArrayInputStream = new ByteArrayInputStream(audioData);
-
-
             audioFormat = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
             audioInputStream = new AudioInputStream(byteArrayInputStream, audioFormat,
                     audioData.length/audioFormat.getFrameSize());
-
             DataLine.Info dataLineInfo =
                     new DataLine.Info(
                             SourceDataLine.class,
                             audioFormat);
-
             sourceDataLine = (SourceDataLine)
                     AudioSystem.getLine(
                             dataLineInfo);
+            new ListenThread().start();
+        }catch (Exception e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+    }
 
-            if(readRadioButton.isSelected()){
-                new ListenThread().start();
-            }else{
-                generateBtn.setEnabled(false);
+    private void outputdata() {
+        try{
+            InputStream byteArrayInputStream = new ByteArrayInputStream(audioData);
+            audioFormat = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
+            audioInputStream = new AudioInputStream(byteArrayInputStream, audioFormat,
+                    audioData.length/audioFormat.getFrameSize());
+            DataLine.Info dataLineInfo =
+                    new DataLine.Info(
+                            SourceDataLine.class,
+                            audioFormat);
+            sourceDataLine = (SourceDataLine)
+                    AudioSystem.getLine(
+                            dataLineInfo);
+            generateBtn.setEnabled(false);
                 playorfileBtn.setEnabled(false);
-
                 try{
                     AudioSystem.write(
                             audioInputStream,
@@ -100,7 +126,6 @@ public class Main {
                 }
                 generateBtn.setEnabled(true);
                 playorfileBtn.setEnabled(true);
-            }
         }catch (Exception e) {
             e.printStackTrace();
             System.exit(0);
@@ -133,7 +158,6 @@ public class Main {
                         playBuffer, 0,
                         playBuffer.length))
                         != -1){
-
                     if(cnt > 0){
                         sourceDataLine.write(playBuffer, 0, cnt);
                     }
@@ -194,12 +218,12 @@ public class Main {
                 if(tonecnt == 5) freq = 294;
                 if(tonecnt == 6) freq = 330;
                 if(tonecnt == 7) freq = 262;
-                if(tonecnt == 8) freq = 294;
-                if(tonecnt == 9) freq = 330;
-                if(tonecnt == 10) freq = 349;
-                if(tonecnt == 11) freq = 294;
-                if(tonecnt == 12) freq = 330;
-                if(tonecnt == 13) freq = 349;
+                if(tonecnt == 8) freq = 330;
+                if(tonecnt == 9) freq = 349;
+                if(tonecnt == 10) freq = 392;
+                if(tonecnt == 11) freq = 330;
+                if(tonecnt == 12) freq = 349;
+                if(tonecnt == 13) freq = 392;
                 durationTxt.setText(String.valueOf(tonecnt));
             }
 
