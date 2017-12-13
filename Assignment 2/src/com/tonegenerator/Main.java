@@ -28,11 +28,27 @@ public class Main {
     private JPanel panelLeft;
     private JPanel panelRight;
 
+    float sampleRate = 16000.0F;
+    int sampleSizeInBits = 16;
+    int channels = 1;
+    boolean signed = true;
+    boolean bigEndian = true;
+    byte audioData[] = new byte[16000*4];
+
     public Main() {
+        playorfileBtn.setEnabled(false);
         generateBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                playorfileBtn.setEnabled(false);
+                new SynGen().getSyntheticData(audioData);
+                playorfileBtn.setEnabled(true);
+            }
+        });
+        playorfileBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                playorfiledata();
             }
         });
     }
@@ -43,8 +59,7 @@ public class Main {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-
-
+        new Main();
     }
 
 }
