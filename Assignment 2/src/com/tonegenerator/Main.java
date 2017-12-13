@@ -44,7 +44,7 @@ public class Main {
     int channels = 1;
     boolean signed = true;
     boolean bigEndian = true;
-    byte audioData[] = new byte[16000*4];
+    byte audioData[] = new byte[16000*14];
 
     public Main() {
         playorfileBtn.setEnabled(false);
@@ -66,7 +66,9 @@ public class Main {
 
     private void playorfiledata() {
         try{
+
             InputStream byteArrayInputStream = new ByteArrayInputStream(audioData);
+
 
             audioFormat = new AudioFormat(sampleRate, sampleSizeInBits, channels, signed, bigEndian);
             audioInputStream = new AudioInputStream(byteArrayInputStream, audioFormat,
@@ -165,8 +167,6 @@ public class Main {
             byteLength = synDataBuffer.length;
 
             if(sineWaveRadioButton.isSelected()) sinetones();
-            if(cosineWaveRadioButton.isSelected()) stereoPanning();
-
         }
 
         void sinetones(){
@@ -175,16 +175,37 @@ public class Main {
             sampleRate = 16000.0F;
             double freq = 262;
             int sampLength = byteLength/bytesPerSamp;
+            readTxt.setText(String.valueOf(sampLength));
             int cnt = 0;
+            int tonecnt = -1;
             for(cnt = 0; cnt < sampLength; cnt++){
                 double time = cnt/sampleRate;
                 double sinValue = (Math.sin(2*Math.PI*freq*time));
                 shortBuffer.put((short)(16000*sinValue));
+                if(cnt % 8000 == 0)
+                {
+                    tonecnt++;
+                }
+                if(tonecnt == 0) freq = 262;
+                if(tonecnt == 1) freq = 294;
+                if(tonecnt == 2) freq = 330;
+                if(tonecnt == 3) freq = 262;
+                if(tonecnt == 4) freq = 262;
+                if(tonecnt == 5) freq = 294;
+                if(tonecnt == 6) freq = 330;
+                if(tonecnt == 7) freq = 262;
+                if(tonecnt == 8) freq = 294;
+                if(tonecnt == 9) freq = 330;
+                if(tonecnt == 10) freq = 349;
+                if(tonecnt == 11) freq = 294;
+                if(tonecnt == 12) freq = 330;
+                if(tonecnt == 13) freq = 349;
+                durationTxt.setText(String.valueOf(tonecnt));
             }
 
             /*
             freq = 294;
-            for(cnt = 0; cnt < sampLength; cnt++){
+            for(; cnt < sampLength/2; cnt++){
                 double time = cnt/sampleRate;
                 double sinValue =
                         (Math.sin(2*Math.PI*freq*time)); //+
@@ -192,9 +213,9 @@ public class Main {
                 //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
                 shortBuffer.put((short)(16000*sinValue));
             }//end for loop
-            /*
+
             freq = 330;
-            for(cnt = 0; cnt < sampLength; cnt++){
+            for(; cnt < sampLength*0.75; cnt++){
                 double time = cnt/sampleRate;
                 double sinValue =
                         (Math.sin(2*Math.PI*freq*time)); //+
@@ -203,7 +224,7 @@ public class Main {
                 shortBuffer.put((short)(16000*sinValue));
             }//end for loop
             freq = 294;
-            for(cnt = 0; cnt < sampLength; cnt++){
+            for(; cnt < sampLength; cnt++){
                 double time = cnt/sampleRate;
                 double sinValue =
                         (Math.sin(2*Math.PI*freq*time)); //+
@@ -211,6 +232,7 @@ public class Main {
                 //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
                 shortBuffer.put((short)(16000*sinValue));
             }//end for loop
+            /*
             freq = 330;
             for(cnt = 0; cnt < sampLength; cnt++){
                 double time = cnt/sampleRate;
@@ -236,94 +258,6 @@ public class Main {
                         (Math.sin(2*Math.PI*freq*time));
                 shortBuffer.put((short)(16000*sinValue));
             }//end for loop*/
-        }//end method tones
-        //-------------------------------------------//
-
-        //This method generates a stereo speaker sweep,
-        // starting with a relatively high frequency
-        // tone on the left speaker and moving across
-        // to a lower frequency tone on the right
-        // speaker.
-        void stereoPanning(){
-            channels = 1;//Java allows 1 or 2
-            //Each channel requires two 8-bit bytes per
-            // 16-bit sample.
-            int bytesPerSamp = 2;
-            sampleRate = 16000.0F;
-            double freq = freqScroll.getValue() * 10;//arbitrary frequency
-            // Allowable 8000,11025,16000,22050,44100
-            int sampLength = byteLength/bytesPerSamp;
-            int cnt = 0;
-            for(cnt = 0; cnt < sampLength/8; cnt++){
-                double time = cnt/sampleRate;
-                double sinValue =
-                        (Math.cos(2*Math.PI*freq*time)); //+
-                //Math.sin(2*Math.PI*(freq/1.8)*time) +
-                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
-                shortBuffer.put((short)(16000*sinValue));
-            }//end for loop
-            freq+= 20;
-            for(; cnt < (sampLength/8) * 2; cnt++){
-                double time = cnt/sampleRate;
-                double sinValue =
-                        (Math.cos(2*Math.PI*freq*time)); //+
-                //Math.sin(2*Math.PI*(freq/1.8)*time) +
-                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
-                shortBuffer.put((short)(16000*sinValue));
-            }//end for loop
-            freq+=20;
-            for(; cnt < (sampLength/8) * 3; cnt++){
-                double time = cnt/sampleRate;
-                double sinValue =
-                        (Math.cos(2*Math.PI*freq*time)); //+
-                //Math.sin(2*Math.PI*(freq/1.8)*time) +
-                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
-                shortBuffer.put((short)(16000*sinValue));
-            }//end for loop
-            freq-=40;
-            for(; cnt < (sampLength/8) * 4; cnt++){
-                double time = cnt/sampleRate;
-                double sinValue =
-                        (Math.cos(2*Math.PI*freq*time)); //+
-                //Math.sin(2*Math.PI*(freq/1.8)*time) +
-                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
-                shortBuffer.put((short)(16000*sinValue));
-            }//end for loop
-            for(; cnt < (sampLength/8) * 5; cnt++){
-                double time = cnt/sampleRate;
-                double sinValue =
-                        (Math.cos(2*Math.PI*freq*time)); //+
-                //Math.sin(2*Math.PI*(freq/1.8)*time) +
-                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
-                shortBuffer.put((short)(16000*sinValue));
-            }//end for loop
-            freq+= 20;
-            for(; cnt < (sampLength/8) * 6; cnt++){
-                double time = cnt/sampleRate;
-                double sinValue =
-                        (Math.cos(2*Math.PI*freq*time)); //+
-                //Math.sin(2*Math.PI*(freq/1.8)*time) +
-                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
-                shortBuffer.put((short)(16000*sinValue));
-            }//end for loop
-            freq+=20;
-            for(; cnt < (sampLength/8) * 7; cnt++){
-                double time = cnt/sampleRate;
-                double sinValue =
-                        (Math.cos(2*Math.PI*freq*time)); //+
-                //Math.sin(2*Math.PI*(freq/1.8)*time) +
-                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
-                shortBuffer.put((short)(16000*sinValue));
-            }//end for loop
-            freq-=40;
-            for(; cnt < sampLength; cnt++){
-                double time = cnt/sampleRate;
-                double sinValue =
-                        (Math.cos(2*Math.PI*freq*time)); //+
-                //Math.sin(2*Math.PI*(freq/1.8)*time) +
-                //Math.sin(2*Math.PI*(freq/1.5)*time))/3.0;
-                shortBuffer.put((short)(16000*sinValue));
-            }//end for loop
-        }//end method stereoPanning
+        }
     }
 }
