@@ -21,12 +21,9 @@ public class Main {
     private JButton generateBtn;
     private JButton playorfileBtn;
     private JScrollBar freqScroll;
-    private JScrollBar amplitudeScroll;
     private JTextField freqInput;
-    private JTextField amplitudeInput;
     private JLabel durationTxt;
     private JLabel freqTxt;
-    private JLabel amplitudeTxt;
     private JRadioButton bassoRadioButton;
     private JRadioButton bothRadioButton;
     private JTextField readTxt;
@@ -34,8 +31,9 @@ public class Main {
     private JPanel panelLeft;
     private JPanel panelRight;
     private JRadioButton altoRadioButton;
-    private JRadioButton readFileRadioButton;
     private JTextField fileNameTxt;
+    private JRadioButton readFileRadioButton;
+    private JTextField inputLevelTxt;
 
     AudioFormat audioFormat;
     AudioInputStream audioInputStream;
@@ -71,11 +69,10 @@ public class Main {
         synButtonGroup.add(otherRadioButton);
         synButtonGroup.add(bassoRadioButton);
         synButtonGroup.add(bothRadioButton);
-        final ButtonGroup crtButtonGroup = new ButtonGroup();
-        crtButtonGroup.add(altoRadioButton);
-        crtButtonGroup.add(bassoRadioButton);
-        crtButtonGroup.add(bothRadioButton);
-        crtButtonGroup.add(readFileRadioButton);
+        synButtonGroup.add(altoRadioButton);
+        synButtonGroup.add(bassoRadioButton);
+        synButtonGroup.add(bothRadioButton);
+        synButtonGroup.add(readFileRadioButton);
         freqInput.setText(String.valueOf(freqScroll.getValue()));
 
         playorfileBtn.setEnabled(false);
@@ -87,10 +84,13 @@ public class Main {
                         || triangleWaveRadioButton.isSelected() || squareWaveRadioButton.isSelected()) {
                     audioData = new byte[16000 * 2];
                     new SynGen().getSyntheticData(audioData);
-                } else if (bassoRadioButton.isSelected() || altoRadioButton.isSelected() || bothRadioButton.isSelected()) {
+                } else if (bassoRadioButton.isSelected() || altoRadioButton.isSelected() || otherRadioButton.isSelected()) {
                     String textGet = readTxt.getText();
                     int txtCount = 0;
                     int level = 4;
+                    if(bassoRadioButton.isSelected()) level = 2;
+                    if(altoRadioButton.isSelected()) level = 4;
+                    if(otherRadioButton.isSelected()) level = Integer.parseInt(inputLevelTxt.getText());
                     for (int i = 0; i < textGet.length(); i++) {
                         if (textGet.charAt(i) != '^') txtCount++;
                         //fileNameTxt.setText(fileNameTxt.getText() + textGet.charAt(i));
@@ -264,7 +264,7 @@ public class Main {
         JFrame frame = new JFrame("Tone Generator");
         frame.setContentPane(new Main().panelMain);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);
+        frame.setSize(450, 400);
         frame.setVisible(true);
         new Main();
     }
@@ -318,7 +318,7 @@ public class Main {
             byteLength = synDataBuffer.length;
             if (sineWaveRadioButton.isSelected()) sinetones();
             else if (cosineWaveRadioButton.isSelected()) cosinetones();
-            else if (bassoRadioButton.isSelected()) bassotones();
+            else if (bassoRadioButton.isSelected() || altoRadioButton.isSelected() || otherRadioButton.isSelected()) bassotones();
         }
 
         void sinetones() {
@@ -364,29 +364,68 @@ public class Main {
                     sinValue = (Math.sin(2*Math.PI*song[n]*time));
                 }
                 else {
-
                         if((n+1 != sampLength/8000)){
-                            if(song[n+1] == 0 ){
-                                sinValue = (Math.sin(2*Math.PI*song[n]*time));
-                            }
-                            else {
-                                sinValue = (Math.sin(2*Math.PI*1*time));
-                            }
+                            if(song[n+1] == 0 ) sinValue = (Math.sin(2*Math.PI*song[n]*time));
+                            else sinValue = (Math.sin(2*Math.PI*1*time));
                         }
-                        else {
-                            sinValue = (Math.sin(2*Math.PI*1*time));
-                        }
-
+                        else sinValue = (Math.sin(2*Math.PI*1*time));
                 }
                 shortBuffer.put((short)(16000*sinValue));
             }
-            /*
+        }
+
+        void mergetones() {
+            channels = 1;
+            int bytesPerSamp = 2;
+            int n = -1;
+            double sinValue = 0;
+            sampleRate = 16000.0F;
+            //double freq = song[0];
+            int sampLength = byteLength / bytesPerSamp;
+            durationTxt.setText(String.valueOf(sampLength));
+
             for(int cnt = 0; cnt < sampLength; cnt++){
+                if(cnt % 8000 == 0) n++;
                 double time = cnt/sampleRate;
-                double sinValue = (Math.sin(2*Math.PI*freq*time));
+                if(cnt % 8000 < 7500){
+                    sinValue = (Math.sin(2*Math.PI*song[n]*time));
+                }
+                else {
+                    if((n+1 != sampLength/8000)){
+                        if(song[n+1] == 0 ) sinValue = (Math.sin(2*Math.PI*song[n]*time));
+                        else sinValue = (Math.sin(2*Math.PI*1*time));
+                    }
+                    else sinValue = (Math.sin(2*Math.PI*1*time));
+                }
                 shortBuffer.put((short)(16000*sinValue));
             }
-            */
+        }
+
+        void mixtones() {
+            channels = 1;
+            int bytesPerSamp = 2;
+            int n = -1;
+            double sinValue = 0;
+            sampleRate = 16000.0F;
+            //double freq = song[0];
+            int sampLength = byteLength / bytesPerSamp;
+            durationTxt.setText(String.valueOf(sampLength));
+
+            for(int cnt = 0; cnt < sampLength; cnt++){
+                if(cnt % 8000 == 0) n++;
+                double time = cnt/sampleRate;
+                if(cnt % 8000 < 7500){
+                    sinValue = (Math.cos(2*Math.PI*song[n]*time));
+                }
+                else {
+                    if((n+1 != sampLength/8000)){
+                        if(song[n+1] == 0 ) sinValue = (Math.sin(2*Math.PI*song[n]*time));
+                        else sinValue = (Math.cos(2*Math.PI*1*time));
+                    }
+                    else sinValue = (Math.cos(2*Math.PI*1*time));
+                }
+                shortBuffer.put((short)(16000*sinValue));
+            }
         }
     }
 }
