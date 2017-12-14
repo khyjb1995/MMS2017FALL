@@ -63,7 +63,8 @@ https://soundcloud.com/how-yong-karn/cosine-wave-2142hz?in=how-yong-karn/sets/mm
 ```
 * Little Star Level Basso(2)
 
-[Link](https://soundcloud.com/how-yong-karn/little-star-level-basso-2?in=how-yong-karn/sets/mmsfall2017-assignment2)
+(https://soundcloud.com/how-yong-karn/little-star-level-basso-2?in=how-yong-karn/sets/mmsfall2017-assignment2)
+
 * Little Star Level Alto(4)
 
 [Link](https://soundcloud.com/how-yong-karn/little-star-level-alto-4?in=how-yong-karn/sets/mmsfall2017-assignment2)
