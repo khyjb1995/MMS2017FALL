@@ -29,9 +29,9 @@ User Interface:
 ![alt tag](https://github.com/khyjb1995/MMS2017FALL/blob/master/Assignment%202/program.jpg?raw=true)
 
 Result wave audio
-'''
+```
 https://soundcloud.com/how-yong-karn/sets/mmsfall2017-assignment2
-'''
+```
      
 
 ## Problem(s) encountered
