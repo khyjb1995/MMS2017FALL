@@ -18,7 +18,7 @@ This program designed to read musical notes at Tonal Input TextField. The format
 * Long -  _
 
 ## Flowchart
-![alt tag](https://)
+![alt tag](https://https://github.com/khyjb1995/MMS2017FALL/blob/master/Assignment%202/flowchart.jpg?raw=true)
 
 ## The way to set up and run this program
 Tools: IntelliJ IDEA 2017.3
@@ -26,7 +26,12 @@ This program requires JDK9.0 to run properly.
 
 ## The illustrations or figures to demonstrate the results produced by this program
 User Interface:  
-![alt tag](https://)
+![alt tag](https://github.com/khyjb1995/MMS2017FALL/blob/master/Assignment%202/program.jpg?raw=true)
+
+Result wave audio
+'''
+https://soundcloud.com/how-yong-karn/sets/mmsfall2017-assignment2
+'''
      
 
 ## Problem(s) encountered
