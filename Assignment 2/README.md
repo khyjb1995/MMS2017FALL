@@ -30,7 +30,7 @@ User Interface:
 
 Result wave audio
 ```
-[https://soundcloud.com/how-yong-karn/sets/mmsfall2017-assignment2](https://soundcloud.com/how-yong-karn/sets/mmsfall2017-assignment2)
+* https://soundcloud.com/how-yong-karn/sets/mmsfall2017-assignment2
 ```
      
 
