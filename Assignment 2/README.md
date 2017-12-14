@@ -61,13 +61,17 @@ https://soundcloud.com/how-yong-karn/cosine-wave-2142hz?in=how-yong-karn/sets/mm
 ```
 1155665_4433221_5544332_5544332_1155665_4433221_
 ```
-* Little Star Level Basso(2).
+* Little Star Level Basso(2)
+
 [Link](https://soundcloud.com/how-yong-karn/little-star-level-basso-2?in=how-yong-karn/sets/mmsfall2017-assignment2)
-* Little Star Level Alto(4).
+* Little Star Level Alto(4)
+
 [Link](https://soundcloud.com/how-yong-karn/little-star-level-alto-4?in=how-yong-karn/sets/mmsfall2017-assignment2)
-* Little Star Level (7).
+* Little Star Level (7)
+
 [Link](https://soundcloud.com/how-yong-karn/little-star-level-7?in=how-yong-karn/sets/mmsfall2017-assignment2)
-* Little Star Level Basso(2) & Alto(4).
+* Little Star Level Basso(2) & Alto(4)
+
 [Link](https://soundcloud.com/how-yong-karn/little-star-merge?in=how-yong-karn/sets/mmsfall2017-assignment2)
 
 ## Problem(s) encountered
