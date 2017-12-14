@@ -4,7 +4,7 @@
 This program designed to read musical notes at Tonal Input TextField. The format show at below:
 
 | Tones | Expression |
-|  ---  | --- |
+|  ---  | ---: |
 |   C   |  1  |
 |   C#  | ^1  |
 |   D   |  2  |
@@ -25,6 +25,7 @@ This program designed to read musical notes at Tonal Input TextField. The format
 
 ## The way to set up and run this program
 Tools: IntelliJ IDEA 2017.3.
+
 This program requires JDK9.0 to run properly.  
 
 ## The illustrations or figures to demonstrate the results produced by this program
