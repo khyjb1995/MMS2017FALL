@@ -30,8 +30,8 @@
 
 |  | MacroBlock | SearchSize | Speed | SNR |
 |---|---|---|---|---|
-| Sequential Search |  | 399x391 | 59KB | |
-| 2D Logarithm Search |  | 399x391 | 55KB | |
+| Sequential Search | 16x16 | 31x31 | 24s | None |
+| 2D Logarithm Search |  |  |  |  |
 |  |  |  |  | |
 |  |  |  |  | |
 |  |  |  |  | |
