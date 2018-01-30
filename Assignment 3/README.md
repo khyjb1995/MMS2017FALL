@@ -1,14 +1,13 @@
-# Halftone Dithering of Gray-Level Images
-## Assignment 1 Report
+# Motion Compensation
+## Assignment 3 Report
 ### Tools
  - Microsoft Visual Studio
  - Github for Desktop
  - OpenCV Library
 #
 ### Assignment Requirements
- - Task 1: Write a program to read images
- - Task 2: Convert color images to gray-level images
- - Task 3: Implement the dithering algorithm
+ - Task 1: Find motion vector for every 16x16 macroblock on the two input images using the Sequential Search and the 2D Logarithm Search
+ - Task 2: Output predict frame
 #
 ### Functions of program
  - Read image from source
